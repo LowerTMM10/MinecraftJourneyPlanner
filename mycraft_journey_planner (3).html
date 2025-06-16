@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MyCraft Journey Planner</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #f0f0f0; }
+    h1 { text-align: center; }
+    #planner { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1); }
+    select, button { padding: 8px; margin: 5px; font-size: 16px; }
+    #result { margin-top: 20px; background: #e0f7fa; padding: 15px; border-radius: 8px; }
+    #map { margin-top: 30px; text-align: center; }
+    img { max-width: 100%; border: 2px solid #ccc; border-radius: 10px; }
+  </style>
+</head>
+<body>
+  <h1>MyCraft Journey Planner</h1>
+  <div id="planner">
+    <label for="start">Van:</label>
+    <select id="start">
+         <option value="Ashlan Village">Ashlan Village</option>
+        <option value="Beachy">Beachy</option>
+        <option value="Boatem">Boatem</option>
+        <option value="Boatem East">Boatem East</option>
+        <option value="Boatem West">Boatem West</option>
+        <option value="Calumine">Calumine</option>
+        <option value="City Central">City Central</option>
+        <option value="Clifford">Clifford</option>
+        <option value="Clifford Central">Clifford Central</option>
+        <option value="East Ward">East Ward</option>
+        <option value="Factory Avenue">Factory Avenue</option>
+        <option value="Hawai">Hawai</option>
+        <option value="Hill-Cave Community">Hill-Cave Community</option>
+        <option value="Hotel">Hotel</option>
+        <option value="Hotel Approach">Hotel Approach</option>
+        <option value="Hotel Park">Hotel Park</option>
+        <option value="Kippendorp">Kippendorp</option>
+        <option value="Leicester">Leicester</option>
+        <option value="Minigames">Minigames</option>
+        <option value="Mountain Valley">Mountain Valley</option>
+        <option value="Old Harrow">Old Harrow</option>
+        <option value="Paddington">Paddington</option>
+        <option value="Rainbow Beacon">Rainbow Beacon</option>
+        <option value="Rayleigh Bay">Rayleigh Bay</option>
+        <option value="Rite An Jutac">Rite An Jutac</option>
+        <option value="West Paddington">West Paddington</option>
+        <option value="West Ward">West Ward</option>
+        <option value="Wildpark">Wildpark</option>
+        <option value="Wiltshire">Wiltshire</option>
+    </select>
+
+    <label for="end">Naar:</label>
+    <select id="end">
+        <option value="Ashlan Village">Ashlan Village</option>
+        <option value="Beachy">Beachy</option>
+        <option value="Boatem">Boatem</option>
+        <option value="Boatem East">Boatem East</option>
+        <option value="Boatem West">Boatem West</option>
+        <option value="Calumine">Calumine</option>
+        <option value="City Central">City Central</option>
+        <option value="Clifford">Clifford</option>
+        <option value="Clifford Central">Clifford Central</option>
+        <option value="East Ward">East Ward</option>
+        <option value="Factory Avenue">Factory Avenue</option>
+        <option value="Hawai">Hawai</option>
+        <option value="Hill-Cave Community">Hill-Cave Community</option>
+        <option value="Hotel">Hotel</option>
+        <option value="Hotel Approach">Hotel Approach</option>
+        <option value="Hotel Park">Hotel Park</option>
+        <option value="Kippendorp">Kippendorp</option>
+        <option value="Leicester">Leicester</option>
+        <option value="Minigames">Minigames</option>
+        <option value="Mountain Valley">Mountain Valley</option>
+        <option value="Old Harrow">Old Harrow</option>
+        <option value="Paddington">Paddington</option>
+        <option value="Rainbow Beacon">Rainbow Beacon</option>
+        <option value="Rayleigh Bay">Rayleigh Bay</option>
+        <option value="Rite An Jutac">Rite An Jutac</option>
+        <option value="West Paddington">West Paddington</option>
+        <option value="West Ward">West Ward</option>
+        <option value="Wildpark">Wildpark</option>
+        <option value="Wiltshire">Wiltshire</option>
+        </select>
+
+    <button onclick="calculateRoute()">Plan Reis</button>
+
+    <div id="result"></div>
+    <div id="map">
+        <h3>Metrokaart</h3>
+        <img src="https://drive.google.com/uc?export=download&id=1I5LbtlEqTweU_NG6hn1qhlyB064_0t1h" alt="Metrokaart">
+    </div>
+  </div>
+
+  <script>
+    let graph = {};
+    let stations = [];
+
+    // Pas de fetch URL aan naar de directe Google Drive downloadlink
+    fetch('https://drive.google.com/uc?export=download&id=147jwbPwqjgfs_cvm8adWXNz3UE0WK34z')
+      .then(res => {
+        if (!res.ok) {
+          // Handel HTTP fouten af, bijv. 404 Not Found
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then(data => {
+        graph = {};
+        stations = data.stations;
+        data.connections.forEach(conn => {
+          if (!graph[conn.from]) graph[conn.from] = [];
+          graph[conn.from].push({ to: conn.to, line: conn.line });
+        });
+        populateDropdowns();
+      })
+      .catch(error => {
+        console.error("Fout bij het laden van de journey data:", error);
+        // Optioneel: toon een foutbericht aan de gebruiker
+        document.getElementById("result").innerHTML = "<p>Er is een probleem opgetreden bij het laden van de stationsdata.</p>";
+      });
+
+    function populateDropdowns() {
+      const startSel = document.getElementById("start");
+      const endSel = document.getElementById("end");
+      stations.forEach(station => {
+        let opt1 = new Option(station, station);
+        let opt2 = new Option(station, station);
+        startSel.add(opt1);
+        endSel.add(opt2);
+      });
+    }
+
+    function calculateRoute() {
+      const start = document.getElementById("start").value;
+      const end = document.getElementById("end").value;
+
+      let queue = [{ station: start, path: [], visited: new Set() }];
+      let found = false;
+      let resultPath = [];
+
+      while (queue.length > 0 && !found) {
+        let current = queue.shift();
+        let { station, path, visited } = current;
+
+        if (station === end) {
+          resultPath = path;
+          found = true;
+          break;
+        }
+
+        let neighbors = graph[station] || [];
+        neighbors.forEach(next => {
+          if (!visited.has(next.to)) {
+            queue.push({
+              station: next.to,
+              path: [...path, { from: station, to: next.to, line: next.line }],
+              visited: new Set([...visited, next.to])
+            });
+          }
+        });
+      }
+
+      const resultDiv = document.getElementById("result");
+      if (found) {
+        let lines = resultPath.map(step => `➡️ <b>${step.from}</b> → <b>${step.to}</b> via <i>${step.line}</i>`).join("<br>");
+        resultDiv.innerHTML = `<h3>Route:</h3>${lines}`;
+      } else {
+        resultDiv.innerHTML = "<p>Geen route gevonden.</p>";
+      }
+    }
+</script>
+</body>
+</html>
