@@ -1,0 +1,420 @@
+{
+  "stations": [
+    "Ashlan Village",
+    "Beachy",
+    "Boatem",
+    "Boatem East",
+    "Boatem West",
+    "Calumine",
+    "City Central",
+    "Clifford",
+    "Clifford Central",
+    "East Ward",
+    "Factory Avenue",
+    "Hawai",
+    "Hill-Cave Community",
+    "Hotel",
+    "Hotel Approach",
+    "Hotel Park",
+    "Kippendorp",
+    "Leicester",
+    "Minigames",
+    "Mountain Valley",
+    "Old Harrow",
+    "Paddington",
+    "Rainbow Beacon",
+    "Rayleigh Bay",
+    "Rite An Jutac",
+    "West Paddington",
+    "West Ward",
+    "Wildpark",
+    "Wiltshire"
+  ],
+  "connections": [
+    {
+      "from": "Leicester",
+      "to": "East Ward",
+      "line": "Express"
+    },
+    {
+      "from": "Leicester",
+      "to": "Rayleigh Bay",
+      "line": "National Rail"
+    },
+    {
+      "from": "Leicester",
+      "to": "Wiltshire",
+      "line": "National Rail"
+    },
+    {
+      "from": "Leicester",
+      "to": "West Ward",
+      "line": "Metro D2"
+    },
+    {
+      "from": "East Ward",
+      "to": "Leicester",
+      "line": "Express"
+    },
+    {
+      "from": "East Ward",
+      "to": "Rite An Jutac",
+      "line": "Express"
+    },
+    {
+      "from": "Rite An Jutac",
+      "to": "East Ward",
+      "line": "Express"
+    },
+    {
+      "from": "Rite An Jutac",
+      "to": "Minigames",
+      "line": "Express"
+    },
+    {
+      "from": "Minigames",
+      "to": "Rite An Jutac",
+      "line": "Express"
+    },
+    {
+      "from": "Minigames",
+      "to": "Paddington",
+      "line": "National Rail"
+    },
+    {
+      "from": "Minigames",
+      "to": "West Paddington",
+      "line": "Metro A"
+    },
+    {
+      "from": "Hawai",
+      "to": "Rayleigh Bay",
+      "line": "National Rail"
+    },
+    {
+      "from": "Rayleigh Bay",
+      "to": "Hawai",
+      "line": "National Rail"
+    },
+    {
+      "from": "Rayleigh Bay",
+      "to": "Leicester",
+      "line": "National Rail"
+    },
+    {
+      "from": "Wiltshire",
+      "to": "Leicester",
+      "line": "National Rail"
+    },
+    {
+      "from": "Wiltshire",
+      "to": "Clifford",
+      "line": "National Rail"
+    },
+    {
+      "from": "Wiltshire",
+      "to": "West Ward",
+      "line": "Metro D2"
+    },
+    {
+      "from": "Wiltshire",
+      "to": "Hill-Cave Community",
+      "line": "Metro D2"
+    },
+    {
+      "from": "Clifford",
+      "to": "Wiltshire",
+      "line": "National Rail"
+    },
+    {
+      "from": "Clifford",
+      "to": "Wildpark",
+      "line": "National Rail"
+    },
+    {
+      "from": "Clifford",
+      "to": "Clifford Central",
+      "line": "walk"
+    },
+    {
+      "from": "Wildpark",
+      "to": "Clifford",
+      "line": "National Rail"
+    },
+    {
+      "from": "Wildpark",
+      "to": "Rite An Jutac",
+      "line": "National Rail"
+    },
+    {
+      "from": "Wildpark",
+      "to": "Old Harrow",
+      "line": "Metro B"
+    },
+    {
+      "from": "Wildpark",
+      "to": "Calumine",
+      "line": "Tramlink 1"
+    },
+    {
+      "from": "Rite An Jutac",
+      "to": "Wildpark",
+      "line": "National Rail"
+    },
+    {
+      "from": "Rite An Jutac",
+      "to": "City Central",
+      "line": "National Rail"
+    },
+    {
+      "from": "City Central",
+      "to": "Rite An Jutac",
+      "line": "National Rail"
+    },
+    {
+      "from": "City Central",
+      "to": "Paddington",
+      "line": "National Rail"
+    },
+    {
+      "from": "Paddington",
+      "to": "City Central",
+      "line": "National Rail"
+    },
+    {
+      "from": "Paddington",
+      "to": "Minigames",
+      "line": "National Rail"
+    },
+    {
+      "from": "Rainbow Beacon",
+      "to": "City Central",
+      "line": "Metro A"
+    },
+    {
+      "from": "City Central",
+      "to": "Rainbow Beacon",
+      "line": "Metro A"
+    },
+    {
+      "from": "City Central",
+      "to": "Hotel Park",
+      "line": "Metro A"
+    },
+    {
+      "from": "City Central",
+      "to": "Old Harrow",
+      "line": "Metro E"
+    },
+    {
+      "from": "Hotel Park",
+      "to": "City Central",
+      "line": "Metro A"
+    },
+    {
+      "from": "Hotel Park",
+      "to": "West Paddington",
+      "line": "Metro A"
+    },
+    {
+      "from": "West Paddington",
+      "to": "Hotel Park",
+      "line": "Metro A"
+    },
+    {
+      "from": "West Paddington",
+      "to": "Minigames",
+      "line": "Metro A"
+    },
+    {
+      "from": "West Paddington",
+      "to": "Hotel",
+      "line": "Metro C"
+    },
+    {
+      "from": "West Paddington",
+      "to": "Paddington",
+      "line": "walk"
+    },
+    {
+      "from": "Old Harrow",
+      "to": "City Central",
+      "line": "Metro B"
+    },
+    {
+      "from": "Beachy",
+      "to": "Hotel",
+      "line": "Metro B"
+    },
+    {
+      "from": "Beachy",
+      "to": "Boatem",
+      "line": "Metro E"
+    },
+    {
+      "from": "Hotel",
+      "to": "Beachy",
+      "line": "Metro B"
+    },
+    {
+      "from": "Hotel",
+      "to": "Mountain Valley",
+      "line": "Metro B"
+    },
+    {
+      "from": "Hotel",
+      "to": "West Paddington",
+      "line": "Metro C"
+    },
+    {
+      "from": "Hotel",
+      "to": "Factory Avenue",
+      "line": "Metro C"
+    },
+    {
+      "from": "Hotel",
+      "to": "Hotel Approach",
+      "line": "walk"
+    },
+    {
+      "from": "Mountain Valley",
+      "to": "Hotel",
+      "line": "Metro B"
+    },
+    {
+      "from": "Factory Avenue",
+      "to": "Hotel",
+      "line": "Metro C"
+    },
+    {
+      "from": "Factory Avenue",
+      "to": "Boatem",
+      "line": "Metro C"
+    },
+    {
+      "from": "Boatem",
+      "to": "Factory Avenue",
+      "line": "Metro C"
+    },
+    {
+      "from": "Boatem",
+      "to": "Beachy",
+      "line": "Metro E"
+    },
+    {
+      "from": "Boatem",
+      "to": "Boatem West",
+      "line": "Tramlink 2"
+    },
+    {
+      "from": "Boatem",
+      "to": "Boatem East",
+      "line": "Tramlink 2"
+    },
+    {
+      "from": "West Ward",
+      "to": "Leicester",
+      "line": "Metro D2"
+    },
+    {
+      "from": "West Ward",
+      "to": "East Ward",
+      "line": "Metro D1"
+    },
+    {
+      "from": "West Ward",
+      "to": "Wiltshire",
+      "line": "Metro D2"
+    },
+    {
+      "from": "East Ward",
+      "to": "West Ward",
+      "line": "Metro D1"
+    },
+    {
+      "from": "Hill-Cave Community",
+      "to": "Wiltshire",
+      "line": "Metro D2"
+    },
+    {
+      "from": "Hill-Cave Community",
+      "to": "Kippendorp",
+      "line": "Tramlink 1"
+    },
+    {
+      "from": "Kippendorp",
+      "to": "Hill-Cave Community",
+      "line": "Tramlink 1"
+    },
+    {
+      "from": "Kippendorp",
+      "to": "Ashlan Village",
+      "line": "Tramlink 1"
+    },
+    {
+      "from": "Ashlan Village",
+      "to": "Kippendorp",
+      "line": "Tramlink 1"
+    },
+    {
+      "from": "Ashlan Village",
+      "to": "Clifford Central",
+      "line": "Tramlink 1"
+    },
+    {
+      "from": "Clifford Central",
+      "to": "Ashlan Village",
+      "line": "Tramlink 1"
+    },
+    {
+      "from": "Clifford Central",
+      "to": "Calumine",
+      "line": "Tramlink 1"
+    },
+    {
+      "from": "Clifford Central",
+      "to": "Clifford",
+      "line": "walk"
+    },
+    {
+      "from": "Calumine",
+      "to": "Clifford Central",
+      "line": "Tramlink 1"
+    },
+    {
+      "from": "Calumine",
+      "to": "Wildpark",
+      "line": "Tramlink 1"
+    },
+    {
+      "from": "Boatem West",
+      "to": "Boatem",
+      "line": "Tramlink 2"
+    },
+    {
+      "from": "Boatem East",
+      "to": "Boatem",
+      "line": "Tramlink 2"
+    },
+    {
+      "from": "Boatem East",
+      "to": "Hotel Approach",
+      "line": "Tramlink 2"
+    },
+    {
+      "from": "Hotel Approach",
+      "to": "Boatem East",
+      "line": "Tramlink 2"
+    },
+    {
+      "from": "Hotel Approach",
+      "to": "Hotel",
+      "line": "walk"
+    },
+    {
+      "from": "Paddington",
+      "to": "West Paddington",
+      "line": "walk"
+    }
+  ]
+}
