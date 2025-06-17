@@ -49,7 +49,7 @@
     {
       "from": "Leicester",
       "to": "West Ward",
-      "line": "Metro D2"
+      "line": "Metro D"
     },
     {
       "from": "East Ward",
@@ -114,12 +114,12 @@
     {
       "from": "Wiltshire",
       "to": "West Ward",
-      "line": "Metro D2"
+      "line": "Metro D"
     },
     {
       "from": "Wiltshire",
       "to": "Hill-Cave Community",
-      "line": "Metro D2"
+      "line": "Metro D"
     },
     {
       "from": "Clifford",
@@ -159,7 +159,7 @@
     {
       "from": "Wildpark",
       "to": "Calumine",
-      "line": "Tramlink 1"
+      "line": "Tramlink"
     },
     {
       "from": "Rite An Jutac",
@@ -253,6 +253,26 @@
     },
     {
       "from": "Beachy",
+      "to": "City Central",
+      "line": "Metro B"
+    },
+    {
+      "from": "Beachy",
+      "to": "City Central",
+      "line": "Metro E"
+    },
+        {
+      "from": "City Central",
+      "to": "Beachy",
+      "line": "Metro B"
+    },
+    {
+      "from": "City Central",
+      "to": "Beachy",
+      "line": "Metro E"
+    },
+    {
+      "from": "Beachy",
       "to": "Boatem",
       "line": "Metro E"
     },
@@ -309,72 +329,72 @@
     {
       "from": "Boatem",
       "to": "Boatem West",
-      "line": "Tramlink 2"
+      "line": "Tramlink"
     },
     {
       "from": "Boatem",
       "to": "Boatem East",
-      "line": "Tramlink 2"
+      "line": "Tramlink"
     },
     {
       "from": "West Ward",
       "to": "Leicester",
-      "line": "Metro D2"
+      "line": "Metro D"
     },
     {
       "from": "West Ward",
       "to": "East Ward",
-      "line": "Metro D1"
+      "line": "Metro D"
     },
     {
       "from": "West Ward",
       "to": "Wiltshire",
-      "line": "Metro D2"
+      "line": "Metro D"
     },
     {
       "from": "East Ward",
       "to": "West Ward",
-      "line": "Metro D1"
+      "line": "Metro D"
     },
     {
       "from": "Hill-Cave Community",
       "to": "Wiltshire",
-      "line": "Metro D2"
+      "line": "Metro D"
     },
     {
       "from": "Hill-Cave Community",
       "to": "Kippendorp",
-      "line": "Tramlink 1"
+      "line": "Tramlink"
     },
     {
       "from": "Kippendorp",
       "to": "Hill-Cave Community",
-      "line": "Tramlink 1"
+      "line": "Tramlink"
     },
     {
       "from": "Kippendorp",
       "to": "Ashlan Village",
-      "line": "Tramlink 1"
+      "line": "Tramlink"
     },
     {
       "from": "Ashlan Village",
       "to": "Kippendorp",
-      "line": "Tramlink 1"
+      "line": "Tramlink"
     },
     {
       "from": "Ashlan Village",
       "to": "Clifford Central",
-      "line": "Tramlink 1"
+      "line": "Tramlink"
     },
     {
       "from": "Clifford Central",
       "to": "Ashlan Village",
-      "line": "Tramlink 1"
+      "line": "Tramlink"
     },
     {
       "from": "Clifford Central",
       "to": "Calumine",
-      "line": "Tramlink 1"
+      "line": "Tramlink"
     },
     {
       "from": "Clifford Central",
@@ -384,32 +404,32 @@
     {
       "from": "Calumine",
       "to": "Clifford Central",
-      "line": "Tramlink 1"
+      "line": "Tramlink"
     },
     {
       "from": "Calumine",
       "to": "Wildpark",
-      "line": "Tramlink 1"
+      "line": "Tramlink"
     },
     {
       "from": "Boatem West",
       "to": "Boatem",
-      "line": "Tramlink 2"
+      "line": "Tramlink"
     },
     {
       "from": "Boatem East",
       "to": "Boatem",
-      "line": "Tramlink 2"
+      "line": "Tramlink"
     },
     {
       "from": "Boatem East",
       "to": "Hotel Approach",
-      "line": "Tramlink 2"
+      "line": "Tramlink"
     },
     {
       "from": "Hotel Approach",
       "to": "Boatem East",
-      "line": "Tramlink 2"
+      "line": "Tramlink"
     },
     {
       "from": "Hotel Approach",
