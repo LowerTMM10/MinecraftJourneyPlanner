@@ -44,6 +44,16 @@
   },
   "connections": [
     {
+      "from": "Minigames",
+      "to": "Mountain Valley",
+      "line": "A - Shuttle"
+    },
+    {
+      "from": "Mountain Valley",
+      "to": "Minigames",
+      "line": "A - Shuttle"
+    },
+    {
       "from": "Leicester",
       "to": "East Ward",
       "line": "Express"
