@@ -195,7 +195,11 @@
 
             const resultDiv = document.getElementById("result");
             if (found) {
-                let lines = resultPath.map(step => `<i>${step.line}</i> <b>${step.from}</b> → <b>${step.to}</b> via <i>${step.line}</i>`).join("<br>");
+                // Hier halen we de emoji op!
+                let lines = resultPath.map(step => {
+                    const emoji = lineDetails[step.line] ? lineDetails[step.line].colorEmoji : ''; // Haal de emoji op
+                    return `➡️ ${emoji} <b>${step.from}</b> → <b>${step.to}</b> via <i>${step.line}</i>`; // Gebruik de emoji hier
+                }).join("<br>");
                 resultDiv.innerHTML = `<h3>Route:</h3>${lines}`;
             } else {
                 resultDiv.innerHTML = "<p>Geen route gevonden.</p>";
