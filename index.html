@@ -1,119 +1,206 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Minecraft Journey Planner</title>
+    <meta charset="UTF-8">
+    <title>Minecraft Journey Planner</title>
 
-  <link rel="icon" href="https://cdn.discordapp.com/icons/1281634772694863883/1b8f50125d0f80d55cd015014ea2fdbc.png?size=160&amp;quality=lossless" type="image/png">
-  <style>
-    body { font-family: sans-serif; padding: 20px; background: #f0f0f0; }
-    h1 { text-align: center; }
-    #planner { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1); }
-    select, button { padding: 8px; margin: 5px; font-size: 16px; }
-    #result { margin-top: 20px; background: #e0f7fa; padding: 15px; border-radius: 8px; }
-    #map { margin-top: 30px; text-align: center; }
-    img { max-width: 100%; border: 2px solid #ccc; border-radius: 10px; }
-  </style>
+    <link rel="icon" href="https://cdn.discordapp.com/icons/1281634772694863883/1b8f50125d0f80d55cd015014ea2fdbc.png?size=160&amp;quality=lossless" type="image/png">
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #f0f0f0; }
+        h1 { text-align: center; }
+        #planner { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 15px rgba(0,0,0,0.1); }
+        select, button { padding: 8px; margin: 5px; font-size: 16px; }
+        #result { margin-top: 20px; background: #e0f7fa; padding: 15px; border-radius: 8px; }
+        #map { margin-top: 30px; text-align: center; }
+        img { max-width: 100%; border: 2px solid #ccc; border-radius: 10px; }
+    </style>
 </head>
 <body>
-  <h1>Minecraft Journey Planner</h1>
-  <div id="planner">
-    <label for="start">Van:</label>
-    <select id="start">
-    </select>
+    <h1>Minecraft Journey Planner</h1>
+    <div id="planner">
+        <label for="start">Van:</label>
+        <select id="start"></select>
 
-    <label for="end">Naar:</label>
-    <select id="end">
-    </select>
+        <label for="end">Naar:</label>
+        <select id="end"></select>
 
-    <button onclick="calculateRoute()">Plan Reis</button>
+        <label for="preference">Voorkeur:</label>
+        <select id="preference">
+            <option value="minste_stations">Minste stations</option>
+            <option value="minste_overstappen">Minste overstappen</option>
+        </select>
 
-    <div id="result"></div>
-    <div id="map">
-        <h3>Metrokaart</h3>
-        <img src="https://github.com/LowerTMM10/MinecraftJourneyPlanner/blob/main/mycraft.png?raw=true" alt="Metrokaart">
+        <button onclick="calculateRoute()">Plan Reis</button>
+
+        <div id="result"></div>
+        <div id="map">
+            <h3>Metrokaart</h3>
+            <img src="https://raw.githubusercontent.com/LowerTMM10/MinecraftJourneyPlanner/main/mycraft.png" alt="Metrokaart">
+        </div>
     </div>
-  </div>
 
-  <script>
-    let graph = {};
-    let stations = [];
+    <script>
+        let graph = {};
+        let stations = [];
 
-    // Pas de fetch URL aan naar de ruwe GitHub-link van journey_data.json
-    // VERVANG DEZE URL MET JOUW SPECIFIEKE GITHUB RAW URL
-    fetch('https://raw.githubusercontent.com/LowerTMM10/MinecraftJourneyPlanner/refs/heads/main/journey_data.json')
-      .then(res => {
-        if (!res.ok) {
-          // Handel HTTP fouten af, bijv. 404 Not Found of andere problemen
-          throw new Error(`HTTP error! status: ${res.status} - Controleer of de GitHub URL correct is en het bestand bestaat.`);
-        }
-        return res.json();
-      })
-      .then(data => {
-        graph = {};
-        stations = data.stations;
-        data.connections.forEach(conn => {
-          if (!graph[conn.from]) graph[conn.from] = [];
-          graph[conn.from].push({ to: conn.to, line: conn.line });
-        });
-        populateDropdowns();
-      })
-      .catch(error => {
-        console.error("Fout bij het laden van de journey data:", error);
-        // Optioneel: toon een foutbericht aan de gebruiker
-        document.getElementById("result").innerHTML = `<p>Er is een probleem opgetreden bij het laden van de stationsdata: ${error.message}</p>`;
-      });
+        // Correcte fetch URL naar de ruwe GitHub-link van journey_data.json
+        // Let op: 'refs/heads/main' is verwijderd voor de standaard 'main' branch link
+        fetch('https://raw.githubusercontent.com/LowerTMM10/MinecraftJourneyPlanner/main/journey_data.json')
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status} - Controleer of de GitHub URL correct is en het bestand bestaat.`);
+                }
+                return res.json();
+            })
+            .then(data => {
+                graph = {};
+                // Zorg ervoor dat stations ook uniek zijn en consistent in hoofdletters/kleine letters
+                // Door `new Set()` te gebruiken en dan te sorteren
+                stations = [...new Set(data.stations)].sort(); 
+                
+                // Normaliseer connection namen (bijv. alles naar 'City Central' i.p.v. 'City central')
+                // Dit is cruciaal voor correcte routing, ongeacht de casing in de JSON.
+                // Idealiter pas je de JSON-bron aan, maar dit is een client-side 'fix'.
+                data.connections.forEach(conn => {
+                    // Zoek de 'correcte' casing uit de reeds genormaliseerde stationslijst
+                    const fromStation = stations.find(s => s.toLowerCase() === conn.from.toLowerCase()) || conn.from;
+                    const toStation = stations.find(s => s.toLowerCase() === conn.to.toLowerCase()) || conn.to;
 
-    function populateDropdowns() {
-      const startSel = document.getElementById("start");
-      const endSel = document.getElementById("end");
-      stations.forEach(station => {
-        let opt1 = new Option(station, station);
-        let opt2 = new Option(station, station);
-        startSel.add(opt1);
-        endSel.add(opt2);
-      });
-    }
-
-    function calculateRoute() {
-      const start = document.getElementById("start").value;
-      const end = document.getElementById("end").value;
-
-      let queue = [{ station: start, path: [], visited: new Set() }];
-      let found = false;
-      let resultPath = [];
-
-      while (queue.length > 0 && !found) {
-        let current = queue.shift();
-        let { station, path, visited } = current;
-
-        if (station === end) {
-          resultPath = path;
-          found = true;
-          break;
-        }
-
-        let neighbors = graph[station] || [];
-        neighbors.forEach(next => {
-          if (!visited.has(next.to)) {
-            queue.push({
-              station: next.to,
-              path: [...path, { from: station, to: next.to, line: next.line }],
-              visited: new Set([...visited, next.to])
+                    if (!graph[fromStation]) graph[fromStation] = [];
+                    graph[fromStation].push({ to: toStation, line: conn.line });
+                });
+                populateDropdowns();
+            })
+            .catch(error => {
+                console.error("Fout bij het laden van de journey data:", error);
+                document.getElementById("result").innerHTML = `<p>Er is een probleem opgetreden bij het laden van de stationsdata: ${error.message}</p>`;
             });
-          }
-        });
-      }
 
-      const resultDiv = document.getElementById("result");
-      if (found) {
-        let lines = resultPath.map(step => `➡️ <b>${step.from}</b> → <b>${step.to}</b> via <i>${step.line}</i>`).join("<br>");
-        resultDiv.innerHTML = `<h3>Route:</h3>${lines}`;
-      } else {
-        resultDiv.innerHTML = "<p>Geen route gevonden.</p>";
-      }
-    }
-</script>
+        function populateDropdowns() {
+            const startSel = document.getElementById("start");
+            const endSel = document.getElementById("end");
+            // stations zijn nu al uniek en gesorteerd vanuit de fetch-stap
+            stations.forEach(station => {
+                let opt1 = new Option(station, station);
+                let opt2 = new Option(station, station);
+                startSel.add(opt1);
+                endSel.add(opt2);
+            });
+        }
+
+        function calculateRoute() {
+            const start = document.getElementById("start").value;
+            const end = document.getElementById("end").value;
+            const preference = document.getElementById("preference").value;
+
+            // Normaliseer de geselecteerde stations (indien nodig, afhankelijk van de JSON opschoning)
+            // Dit zorgt ervoor dat "City central" (gekozen door gebruiker) matcht met "City Central" (in graph)
+            const normalizedStart = stations.find(s => s.toLowerCase() === start.toLowerCase()) || start;
+            const normalizedEnd = stations.find(s => s.toLowerCase() === end.toLowerCase()) || end;
+
+            if (!graph[normalizedStart] || !graph[normalizedEnd]) {
+                document.getElementById("result").innerHTML = "<p>Ongeldig start- of eindstation. Controleer je selectie.</p>";
+                return;
+            }
+
+            let resultPath = [];
+            let found = false;
+
+            if (preference === "minste_stations") {
+                // Bestaande BFS-logica voor kortste pad (minste stations)
+                let queue = [{ station: normalizedStart, path: [], visited: new Set([normalizedStart]) }];
+
+                while (queue.length > 0 && !found) {
+                    let current = queue.shift();
+                    let { station, path, visited } = current;
+
+                    if (station === normalizedEnd) {
+                        resultPath = path;
+                        found = true;
+                        break;
+                    }
+
+                    let neighbors = graph[station] || [];
+                    neighbors.forEach(next => {
+                        if (!visited.has(next.to)) {
+                            queue.push({
+                                station: next.to,
+                                path: [...path, { from: station, to: next.to, line: next.line }],
+                                visited: new Set(visited).add(next.to) // Correcte manier om Set te kopiëren en toe te voegen
+                            });
+                        }
+                    });
+                }
+
+            } else if (preference === "minste_overstappen") {
+                // Dijkstra-achtig algoritme voor minste overstappen
+                // Prioriteitswachtrij gesimuleerd door sorting
+                let queue = [{ station: normalizedStart, path: [], visited: new Set([normalizedStart]), transfers: 0, lastLine: null }];
+                
+                // Houd de beste (minste transfers, dan minste stations) route naar elk station bij
+                let bestPathsToStation = new Map(); // station -> { transfers, pathLength }
+                bestPathsToStation.set(normalizedStart, { transfers: 0, pathLength: 0 });
+
+                while (queue.length > 0 && !found) {
+                    // Sorteer de wachtrij: eerst op aantal overstappen (laag naar hoog), dan op padlengte (laag naar hoog)
+                    queue.sort((a, b) => {
+                        if (a.transfers !== b.transfers) {
+                            return a.transfers - b.transfers;
+                        }
+                        return a.path.length - b.path.length;
+                    });
+
+                    let current = queue.shift();
+                    let { station, path, visited, transfers, lastLine } = current;
+
+                    // Als we al een betere of even goede route naar dit station hebben gevonden, sla deze over
+                    const currentBest = bestPathsToStation.get(station);
+                    if (currentBest && (transfers > currentBest.transfers || (transfers === currentBest.transfers && path.length > currentBest.pathLength))) {
+                        continue;
+                    }
+                    
+                    if (station === normalizedEnd) {
+                        resultPath = path;
+                        found = true;
+                        break;
+                    }
+
+                    let neighbors = graph[station] || [];
+                    neighbors.forEach(next => {
+                        let newTransfers = transfers;
+                        // Tel een overstap als de lijn verandert en dit niet de allereerste stap is
+                        // of als er geen vorige lijn was (begin van een nieuwe route segment)
+                        if (lastLine !== null && next.line !== lastLine) {
+                            newTransfers++;
+                        }
+
+                        let newPath = [...path, { from: station, to: next.to, line: next.line }];
+
+                        // Check of deze nieuwe route naar 'next.to' beter is dan wat we eerder vonden
+                        const existingBestToNext = bestPathsToStation.get(next.to);
+                        if (!existingBestToNext || (newTransfers < existingBestToNext.transfers) || (newTransfers === existingBestToNext.transfers && newPath.length < existingBestToNext.pathLength)) {
+                            // Alleen toevoegen aan de wachtrij als het een verbetering is
+                            queue.push({
+                                station: next.to,
+                                path: newPath,
+                                visited: new Set(visited).add(next.to), // Blijf visited bijhouden per pad
+                                transfers: newTransfers,
+                                lastLine: next.line
+                            });
+                            bestPathsToStation.set(next.to, { transfers: newTransfers, pathLength: newPath.length });
+                        }
+                    });
+                }
+            }
+
+            const resultDiv = document.getElementById("result");
+            if (found) {
+                let lines = resultPath.map(step => `➡️ <b>${step.from}</b> → <b>${step.to}</b> via <i>${step.line}</i>`).join("<br>");
+                resultDiv.innerHTML = `<h3>Route:</h3>${lines}`;
+            } else {
+                resultDiv.innerHTML = "<p>Geen route gevonden.</p>";
+            }
+        }
+    </script>
 </body>
 </html>
