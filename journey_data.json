@@ -31,14 +31,15 @@
     "Wiltshire"
   ],
 "lineDetails": {
-    "Express": { "colorEmoji": "⬛" },
-    "National Rail": { "colorEmoji": "🟦" },
-    "Metro D": { "colorEmoji": "🟪" },
-    "Tramlink": { "colorEmoji": "🟩" },
-    "Metro A": { "colorEmoji": "🟥" },
-    "Metro C": { "colorEmoji": "🟨" },
-    "Metro B": { "colorEmoji": "🟩" },
-    "Metro E": { "colorEmoji": "🟫" },
+    "Express": { "colorEmoji": "🚄 ⬛" },
+    "National Rail": { "colorEmoji": "🚆🟦" },
+    "Metro D": { "colorEmoji": "🚇 🟪" },
+    "Tramlink": { "colorEmoji": "🚊 🟩" },
+    "Metro A": { "colorEmoji": "🚇 🟥" },
+    "A - Shuttle": { "colorEmoji": "🚇 🔴" },
+    "Metro C": { "colorEmoji": "🚇 🟨" },
+    "Metro B": { "colorEmoji": "🚇 🟩" },
+    "Metro E": { "colorEmoji": "🚇 🟫" },
     "walk": { "colorEmoji": "⬜" }
   },
   "connections": [
