@@ -197,8 +197,8 @@
             if (found) {
                 // Hier halen we de emoji op!
                 let lines = resultPath.map(step => {
-                    const emoji = lineDetails[step.line] ? lineDetails[step.line].colorEmoji : ''; // Haal de emoji op
-                    return `➡️ ${emoji} <b>${step.from}</b> → <b>${step.to}</b> via <i>${step.line}</i>`; // Gebruik de emoji hier
+                    //const emoji = lineDetails[step.line] ? lineDetails[step.line].colorEmoji : ''; // Haal de emoji op
+                    return `➡️ <b>${step.from}</b> → <b>${step.to}</b> via <i>${step.line}</i>`; // Gebruik de emoji hier
                 }).join("<br>");
                 resultDiv.innerHTML = `<h3>Route:</h3>${lines}`;
             } else {
