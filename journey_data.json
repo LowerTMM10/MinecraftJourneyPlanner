@@ -30,6 +30,17 @@
     "Wildpark",
     "Wiltshire"
   ],
+"lineDetails": {
+    "Express": { "colorEmoji": "⬛" },
+    "National Rail": { "colorEmoji": "🟦" },
+    "Metro D2": { "colorEmoji": "🟪" },
+    "Tramlink 1": { "colorEmoji": "🟩" },
+    "Metro A": { "colorEmoji": "🟥" },
+    "Metro C": { "colorEmoji": "🟨" },
+    "Metro B": { "colorEmoji": "🟩" },
+    "Metro E": { "colorEmoji": "🟫" },
+    "walk": { "colorEmoji": "⬜" }
+  }
   "connections": [
     {
       "from": "Leicester",
