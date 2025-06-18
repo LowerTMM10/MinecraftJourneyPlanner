@@ -217,14 +217,52 @@
             const resultDiv = document.getElementById("result");
             console.log("Algoritme voltooid. Pad gevonden (found):", found, "Resultaatpad:", resultPath);
             if (found) {
-                let lines = resultPath.map(step => {
+                let linesHtml = resultPath.map(step => {
                     // lineDetails wordt geladen vanuit de JSON, dus check of de line naam matcht
                     const emoji = lineDetails[step.line] ? lineDetails[step.line].colorEmoji : '';
                     console.log(`Stap: ${step.from} → ${step.to} via ${step.line}, Emoji opgezocht: ${emoji}`); // Log elke stap's emoji lookup
-                    return `${emoji} <b>${step.from}</b> → <b>${step.to}</b> via <i>${step.line}</i>`;
+                    return `➡️ ${emoji} <b>${step.from}</b> → <b>${step.to}</b> via <i>${step.line}</i>`;
                 }).join("<br>");
-                resultDiv.innerHTML = `<h3>Route:</h3>${lines}`;
-                console.log("Route weergegeven in resultaat div.");
+
+                // --- Start Fare Calculation ---
+                let totalFare = 0;
+                const fareCategoriesUsed = new Set();
+
+                // Define which lines belong to which fare category
+                const baseFareLines = ["Metro D", "Metro A", "Metro C", "Metro B", "Metro E", "A - Shuttle", "Tramlink"];
+                const expressFareLines = ["Express"];
+                const nationalRailFareLines = ["National Rail"];
+                // "walk" is implicitly free, no category needed for fare calculation
+
+                resultPath.forEach(step => {
+                    const line = step.line;
+                    if (baseFareLines.includes(line)) {
+                        fareCategoriesUsed.add("base");
+                    } else if (expressFareLines.includes(line)) {
+                        fareCategoriesUsed.add("express");
+                    } else if (nationalRailFareLines.includes(line)) {
+                        fareCategoriesUsed.add("national_rail");
+                    }
+                    // For "walk" lines, no fare category is added, so they don't contribute to the cost
+                });
+
+                // Calculate total fare based on unique categories used
+                if (fareCategoriesUsed.has("base")) {
+                    totalFare += 1;
+                }
+                if (fareCategoriesUsed.has("express")) {
+                    totalFare += 1;
+                }
+                if (fareCategoriesUsed.has("national_rail")) {
+                    totalFare += 1;
+                }
+
+                console.log("Fare categories used:", Array.from(fareCategoriesUsed).join(", "));
+                console.log("Total fare calculated:", totalFare);
+                // --- End Fare Calculation ---
+
+                resultDiv.innerHTML = `<h3>Route:</h3>${linesHtml}<br><p>Totale kosten: <b>G$ ${totalFare}</b></p>`;
+                console.log("Route and fare displayed in result div.");
             } else {
                 resultDiv.innerHTML = "<p>Geen route gevonden.</p>";
                 console.log("Melding: Geen route gevonden weergegeven in resultaat div.");
