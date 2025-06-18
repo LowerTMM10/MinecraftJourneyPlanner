@@ -28,6 +28,7 @@
         <select id="preference">
             <option value="minste_stations">Minste stations</option>
             <option value="minste_overstappen">Minste overstappen</option>
+            <option value="goedkoopste_route">Goedkoopste route</option>
         </select>
 
         <button onclick="calculateRoute()">Plan Reis</button>
@@ -42,7 +43,27 @@
     <script>
         let graph = {};
         let stations = [];
-        let lineDetails = {}; // Belangrijk: Maak lineDetails globaal toegankelijk
+        let lineDetails = {};
+
+        // Globale constanten en hulpfuncties voor kostenberekening
+        const baseFareLines = ["Metro D", "Metro A", "Metro C", "Metro B", "Metro E", "A - Shuttle", "Tramlink"];
+        const expressFareLines = ["Express"];
+        const nationalRailFareLines = ["National Rail"];
+
+        function getFareCategoryForLine(line) {
+            if (baseFareLines.includes(line)) return "base";
+            if (expressFareLines.includes(line)) return "express";
+            if (nationalRailFareLines.includes(line)) return "national_rail";
+            return "free"; // Voor "walk" lijnen of onbekende lijnen
+        }
+
+        function calculateFareFromCategories(categoriesSet) {
+            let fare = 0;
+            if (categoriesSet.has("base")) fare += 1;
+            if (categoriesSet.has("express")) fare += 1;
+            if (categoriesSet.has("national_rail")) fare += 1;
+            return fare;
+        }
 
         console.log("--- Pagina geladen, start data fetching ---");
 
@@ -129,6 +150,7 @@
 
             let resultPath = [];
             let found = false;
+            let finalCalculatedFare = 0; // Hierin slaan we de kosten op die het algoritme vindt
 
             if (preference === "minste_stations") {
                 console.log("BFS (Minste stations) algoritme geselecteerd.");
@@ -137,7 +159,6 @@
                 while (queue.length > 0 && !found) {
                     let current = queue.shift();
                     let { station, path, visited } = current;
-                    // console.log("BFS: Huidig station:", station, "Pad lengte:", path.length); // Kan veel output geven
 
                     if (station === normalizedEnd) {
                         resultPath = path;
@@ -175,14 +196,12 @@
 
                     let current = queue.shift();
                     let { station, path, visited, transfers, lastLine } = current;
-                    // console.log("Dijkstra: Huidig station:", station, "Overstappen:", transfers, "Pad lengte:", path.length); // Kan veel output geven
-
+                                        
                     const currentBest = bestPathsToStation.get(station);
                     if (currentBest && (transfers > currentBest.transfers || (transfers === currentBest.transfers && path.length > currentBest.pathLength))) {
-                        // console.log("Dijkstra: Overslaan, al een betere route naar", station);
                         continue;
                     }
-                                        
+                                
                     if (station === normalizedEnd) {
                         resultPath = path;
                         found = true;
@@ -212,6 +231,77 @@
                         }
                     });
                 }
+            } else if (preference === "goedkoopste_route") {
+                console.log("Dijkstra (Goedkoopste route) algoritme geselecteerd.");
+                
+                let queue = [{
+                    station: normalizedStart,
+                    path: [],
+                    currentFare: 0,
+                    fareCategoriesUsed: new Set()
+                }];
+
+                let bestCosts = new Map(); // Key: "station|sortedCategoriesString", Value: {fare, pathLength}
+                // Initial state for the start station, no categories used yet.
+                bestCosts.set(normalizedStart + "|" + Array.from(new Set()).sort().join('_'), { fare: 0, pathLength: 0 });
+
+                while (queue.length > 0) {
+                    // Sorteer de queue: eerst op kosten (laagste eerst), dan op padlengte (kortste eerst)
+                    queue.sort((a, b) => {
+                        if (a.currentFare !== b.currentFare) return a.currentFare - b.currentFare;
+                        return a.path.length - b.path.length;
+                    });
+
+                    let { station, path, currentFare, fareCategoriesUsed } = queue.shift();
+
+                    const currentCategoriesKey = Array.from(fareCategoriesUsed).sort().join('_');
+                    const currentStateKey = station + '|' + currentCategoriesKey;
+
+                    const existingBest = bestCosts.get(currentStateKey);
+                    // Als we al een pad naar deze staat (station + specifieke categorielijst) hebben gevonden
+                    // dat beter of gelijk is, slaan we deze over.
+                    if (existingBest && (currentFare > existingBest.fare || (currentFare === existingBest.fare && path.length > existingBest.pathLength))) {
+                        continue;
+                    }
+
+                    if (station === normalizedEnd) {
+                        resultPath = path;
+                        found = true;
+                        finalCalculatedFare = currentFare; // Sla de uiteindelijke berekende kosten op
+                        console.log("Goedkoopste route: Pad gevonden naar eindstation met kosten:", finalCalculatedFare);
+                        break; // Stop zodra het goedkoopste pad naar de bestemming is gevonden
+                    }
+
+                    let neighbors = graph[station] || [];
+                    neighbors.forEach(next => {
+                        let newFareCategoriesUsed = new Set(fareCategoriesUsed); // Kopieer de set van gebruikte categorieën
+                        const lineCategory = getFareCategoryForLine(next.line); // Bepaal de categorie van de volgende lijn
+                        if (lineCategory !== "free") { // Voeg de categorie toe als het geen gratis lijn is
+                            newFareCategoriesUsed.add(lineCategory);
+                        }
+
+                        const newCurrentFare = calculateFareFromCategories(newFareCategoriesUsed); // Bereken de nieuwe totale kosten
+                        const newPath = [...path, { from: station, to: next.to, line: next.line }];
+                        const newCategoriesKey = Array.from(newFareCategoriesUsed).sort().join('_');
+                        const newStateKey = next.to + '|' + newCategoriesKey;
+
+                        const existingBestToNextState = bestCosts.get(newStateKey);
+
+                        // Als dit pad naar de volgende staat beter is dan een eerder gevonden pad naar diezelfde staat
+                        if (!existingBestToNextState ||
+                            (newCurrentFare < existingBestToNextState.fare) ||
+                            (newCurrentFare === existingBestToNextState.fare && newPath.length < existingBestToNextState.pathLength))
+                        {
+                            queue.push({
+                                station: next.to,
+                                path: newPath,
+                                currentFare: newCurrentFare,
+                                fareCategoriesUsed: newFareCategoriesUsed
+                            });
+                            bestCosts.set(newStateKey, { fare: newCurrentFare, pathLength: newPath.length });
+                        }
+                    });
+                }
             }
 
             const resultDiv = document.getElementById("result");
@@ -224,44 +314,28 @@
                     return `➡️ ${emoji} <b>${step.from}</b> → <b>${step.to}</b> via <i>${step.line}</i>`;
                 }).join("<br>");
 
-                // --- Start Fare Calculation ---
-                let totalFare = 0;
-                const fareCategoriesUsed = new Set();
-
-                // Define which lines belong to which fare category
-                const baseFareLines = ["Metro D", "Metro A", "Metro C", "Metro B", "Metro E", "A - Shuttle", "Tramlink"];
-                const expressFareLines = ["Express"];
-                const nationalRailFareLines = ["National Rail"];
-                // "walk" is implicitly free, no category needed for fare calculation
-
-                resultPath.forEach(step => {
-                    const line = step.line;
-                    if (baseFareLines.includes(line)) {
-                        fareCategoriesUsed.add("base");
-                    } else if (expressFareLines.includes(line)) {
-                        fareCategoriesUsed.add("express");
-                    } else if (nationalRailFareLines.includes(line)) {
-                        fareCategoriesUsed.add("national_rail");
-                    }
-                    // For "walk" lines, no fare category is added, so they don't contribute to the cost
-                });
-
-                // Calculate total fare based on unique categories used
-                if (fareCategoriesUsed.has("base")) {
-                    totalFare += 1;
-                }
-                if (fareCategoriesUsed.has("express")) {
-                    totalFare += 1;
-                }
-                if (fareCategoriesUsed.has("national_rail")) {
-                    totalFare += 1;
+                // Bepaal de weer te geven kosten
+                let totalFareToDisplay = 0;
+                if (preference === "goedkoopste_route") {
+                    // Als "goedkoopste_route" is gekozen, gebruiken we de kosten die het algoritme heeft gevonden
+                    totalFareToDisplay = finalCalculatedFare;
+                } else {
+                    // Voor "minste_stations" of "minste_overstappen", bereken de kosten van het gevonden pad
+                    const fareCategoriesUsedForDisplay = new Set();
+                    resultPath.forEach(step => {
+                        const line = step.line;
+                        const category = getFareCategoryForLine(line);
+                        if (category !== "free") {
+                            fareCategoriesUsedForDisplay.add(category);
+                        }
+                    });
+                    totalFareToDisplay = calculateFareFromCategories(fareCategoriesUsedForDisplay);
+                    console.log("Fare categories used for display (non-cheapest route):", Array.from(fareCategoriesUsedForDisplay).join(", "));
+                    console.log("Total fare calculated for display (non-cheapest route):", totalFareToDisplay);
                 }
 
-                console.log("Fare categories used:", Array.from(fareCategoriesUsed).join(", "));
-                console.log("Total fare calculated:", totalFare);
-                // --- End Fare Calculation ---
 
-                resultDiv.innerHTML = `<h3>Route:</h3>${linesHtml}<br><p>Totale kosten: <b>G$ ${totalFare}</b></p>`;
+                resultDiv.innerHTML = `<h3>Route:</h3>${linesHtml}<br><p>Totale kosten: <b>G$ ${totalFareToDisplay}</b></p>`;
                 console.log("Route and fare displayed in result div.");
             } else {
                 resultDiv.innerHTML = "<p>Geen route gevonden.</p>";
