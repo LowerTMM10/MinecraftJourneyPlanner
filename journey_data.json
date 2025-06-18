@@ -100,7 +100,12 @@
     },
     {
       "from": "Minigames",
-      "to": "Paddington",
+      "to": "North Minigames",
+      "line": "National Rail"
+    },
+    {
+      "from": "North Minigames",
+      "to": "Minigames",
       "line": "National Rail"
     },
     {
@@ -210,7 +215,12 @@
     },
     {
       "from": "Paddington",
-      "to": "Minigames",
+      "to": "North Minigames",
+      "line": "National Rail"
+    },
+    {
+      "from": "North Minigames",
+      "to": "Paddington",
       "line": "National Rail"
     },
     {
