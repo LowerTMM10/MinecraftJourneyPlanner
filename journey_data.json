@@ -41,7 +41,7 @@
     "Metro C": { "colorEmoji": "🚇 🟨" },
     "Metro B": { "colorEmoji": "🚇 🟩" },
     "Metro E": { "colorEmoji": "🚇 🟫" },
-    "walk": { "colorEmoji": "⬜" }
+    "walk": { "colorEmoji": "🚶 ⬜" }
   },
   "connections": [
     {
