@@ -226,6 +226,16 @@
     },
     {
       "from": "Rainbow Beacon",
+      "to": "Boatem",
+      "line": "Metro C"
+    },
+    {
+      "from": "Boatem",
+      "to": "Rainbow Beacon",
+      "line": "Metro C"
+    },
+    {
+      "from": "Rainbow Beacon",
       "to": "City Central",
       "line": "Metro A"
     },
