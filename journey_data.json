@@ -16,6 +16,7 @@
     "Hotel",
     "Hotel Approach",
     "Hotel Park",
+    "Iglo",
     "Kippendorp",
     "Leicester",
     "Minigames",
@@ -26,6 +27,7 @@
     "Rainbow Beacon",
     "Rayleigh Bay",
     "Rite An Jutac",
+    "Vaalserberg",
     "West Paddington",
     "West Ward",
     "Wildpark",
@@ -412,6 +414,26 @@
     {
       "from": "Kippendorp",
       "to": "Hill-Cave Community",
+      "line": "Tramlink"
+    },
+    {
+      "from": "Hill-Cave Community",
+      "to": "Vaalserberg",
+      "line": "Tramlink"
+    },
+    {
+      "from": "Vaalserberg",
+      "to": "Hill-Cave Community",
+      "line": "Tramlink"
+    },
+    {
+      "from": "Iglo",
+      "to": "Vaalserberg",
+      "line": "Tramlink"
+    },
+    {
+      "from": "Vaalserberg",
+      "to": "Iglo",
       "line": "Tramlink"
     },
     {
