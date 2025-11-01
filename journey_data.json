@@ -70,6 +70,11 @@
     },
     {
       "from": "Leicester",
+      "to": "Arena's",
+      "line": "National Rail"
+    },
+    {
+      "from": "Arena's",
       "to": "Wiltshire",
       "line": "National Rail"
     },
@@ -135,6 +140,11 @@
     },
     {
       "from": "Wiltshire",
+      "to": "Arena's",
+      "line": "National Rail"
+    },
+    {
+      "from": "Arena's",
       "to": "Leicester",
       "line": "National Rail"
     },
@@ -225,7 +235,7 @@
     },
     {
       "from": "North Minigames",
-      "to": "Boatem Suburbs",
+      "to": "Paddington",
       "line": "National Rail"
     },
     {
@@ -236,11 +246,6 @@
     {
       "from": "Mountain Valley",
       "to": "Boatem Suburbs",
-      "line": "National Rail"
-    },
-    {
-      "from": "Boatem Suburbs",
-      "to": "Paddington",
       "line": "National Rail"
     },
     {
