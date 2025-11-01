@@ -219,13 +219,33 @@
       "line": "National Rail"
     },
     {
-      "from": "Paddington",
+      "from": "Boatem Suburbs",
       "to": "North Minigames",
       "line": "National Rail"
     },
     {
       "from": "North Minigames",
+      "to": "Boatem Suburbs",
+      "line": "National Rail"
+    },
+    {
+      "from": "Boatem Suburbs",
+      "to": "Mountain Valley",
+      "line": "National Rail"
+    },
+    {
+      "from": "Mountain Valley",
+      "to": "Boatem Suburbs",
+      "line": "National Rail"
+    },
+    {
+      "from": "Boatem Suburbs",
       "to": "Paddington",
+      "line": "National Rail"
+    },
+    {
+      "from": "Paddington",
+      "to": "Boatem Suburbs",
       "line": "National Rail"
     },
     {
