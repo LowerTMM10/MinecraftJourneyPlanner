@@ -15,8 +15,7 @@
     "Factory Avenue",
     "Hawai",
     "Hill-Cave Community",
-    "Hotel",
-    "Hotel Approach",
+    "City East",
     "Hotel Park",
     "Iglo",
     "Kippendorp",
@@ -305,7 +304,7 @@
     },
     {
       "from": "West Paddington",
-      "to": "Hotel",
+      "to": "City East",
       "line": "Metro C"
     },
     {
@@ -320,7 +319,7 @@
     },
     {
       "from": "Beachy",
-      "to": "Hotel",
+      "to": "City East",
       "line": "Metro B"
     },
     {
@@ -349,38 +348,33 @@
       "line": "Metro E"
     },
     {
-      "from": "Hotel",
+      "from": "City East",
       "to": "Beachy",
       "line": "Metro B"
     },
     {
-      "from": "Hotel",
+      "from": "City East",
       "to": "Mountain Valley",
       "line": "Metro B"
     },
     {
-      "from": "Hotel",
+      "from": "City East",
       "to": "West Paddington",
       "line": "Metro C"
     },
     {
-      "from": "Hotel",
+      "from": "City East",
       "to": "Factory Avenue",
       "line": "Metro C"
     },
     {
-      "from": "Hotel",
-      "to": "Hotel Approach",
-      "line": "walk"
-    },
-    {
       "from": "Mountain Valley",
-      "to": "Hotel",
+      "to": "City East",
       "line": "Metro B"
     },
     {
       "from": "Factory Avenue",
-      "to": "Hotel",
+      "to": "City East",
       "line": "Metro C"
     },
     {
@@ -515,18 +509,13 @@
     },
     {
       "from": "Boatem East",
-      "to": "Hotel Approach",
+      "to": "City East",
       "line": "Tramlink"
     },
     {
-      "from": "Hotel Approach",
+      "from": "City East",
       "to": "Boatem East",
       "line": "Tramlink"
-    },
-    {
-      "from": "Hotel Approach",
-      "to": "Hotel",
-      "line": "walk"
     },
     {
       "from": "Paddington",
