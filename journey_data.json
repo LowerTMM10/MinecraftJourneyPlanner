@@ -20,6 +20,7 @@
     "Iglo",
     "Kippendorp",
     "Leicester",
+    "Lucs Station",
     "Minigames",
     "Mountain Valley",
     "North Minigames",
@@ -239,7 +240,22 @@
     },
     {
       "from": "Boatem Suburbs",
+      "to": "Lucs Station",
+      "line": "National Rail"
+    },
+    {
+      "from": "Lucs Station",
       "to": "Mountain Valley",
+      "line": "National Rail"
+    },
+        {
+      "from": "City East",
+      "to": "Lucs Station",
+      "line": "National Rail"
+    },
+    {
+      "from": "Lucs Station",
+      "to": "City East",
       "line": "National Rail"
     },
     {
